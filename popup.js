@@ -61,6 +61,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
+// document.getElementById('summaryButton').addEventListener('click', function() {
+//   const loader = document.getElementById('loader');
+//   const summaryText = document.getElementById('summaryText');
+
+//   // Show loader and hide initial text
+//   loader.style.display = 'block';
+//   summaryText.style.display = 'none';
+
+//   // Example function that simulates fetching summary
+//   fetchSummary().then(summary => {
+//       // Hide loader and show summary
+//       loader.style.display = 'none';
+//       summaryText.style.display = 'block';
+//       summaryText.textContent = summary; // Update the text content with the fetched summary
+//   });
+// });
+
+// async function fetchSummary() {
+//   // Simulate an API call
+//   await new Promise(resolve => setTimeout(resolve, 2000)); // Example timeout to simulate delay
+//   return "This is a simulated summary returned by the API.";
+// }
+
+
 // Listen for response from content script with selected text and URL and call ChatGPT API
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'selectedTextAndURL') {
@@ -71,6 +95,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
     var textToSummarize = request.selectedText;
     var pageURL = request.url;
+
+    // Show loader and hide initial text
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('summaryText').style.display = 'none';
 
     const requestBody = {
       model: "gpt-3.5-turbo",
@@ -118,6 +146,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       if (data.choices && data.choices.length > 0 && data.choices[0].message) {
         const summaryText = data.choices[0].message.content.trim();
         console.log('Summary:', summaryText);
+
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('summaryText').style.display = 'block';
         document.getElementById('summaryText').textContent = summaryText;
       }
     })
