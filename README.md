@@ -2,7 +2,7 @@
 
 ## What is This?
 
-This Chrome Extension enables users to select text on any webpage and have it read aloud using Google's Text-to-Speech API. Additionally, it offers a feature to summarize the selected text via OpenAI's GPT API, providing users with concise summaries of lengthy articles or paragraphs.
+This Chrome Extension enables users to select text on any webpage and have it read aloud using Google's Text-to-Speech API. Additionally, it offers a feature to summarize the selected text via OpenAI's GPT API, providing users with concise summaries of lengthy articles or paragraphs. I have used ChatGPT to help me create this project and README. 
 
 ## Prerequisites
 
