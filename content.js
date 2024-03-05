@@ -8,9 +8,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     // Send the selected text to the popup script
     chrome.runtime.sendMessage({ action: 'selectedText', selectedText: selectedText });
   }
-  else if (request.action === 'getSelectedTextAndURL') {
+
+  if (request.action === 'getSelectedTextAndURL') {
+    // Retrieve the selected text and URL
     var selectedText = window.getSelection().toString();
-    var pageURL = window.location.href;
-    chrome.runtime.sendMessage({ action: 'selectedTextAndURL', selectedText: selectedText, pageURL: pageURL });
+    var url = window.location.href;
+    // Send the selected text and URL to the popup script
+    chrome.runtime.sendMessage({ action: 'selectedTextAndURL', selectedText: selectedText, url: url });
   }
 });
+

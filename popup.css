@@ -1,0 +1,9 @@
+.summary-container {
+    min-height: 100px; /* Minimum height, but can grow */
+    max-height: 300px; /* Maximum height before scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
+    word-wrap: break-word; /* Ensures long words do not overflow */
+    width: 80dvh;
+  }
+  
