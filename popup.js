@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'selectedText') {
     var textToSynthesize = request.selectedText;
-    const apiKey = window.prompt('Enter the Google API_KEY to convert text to speech:');
+    const apiKey = CONFIG.GOOGLE_API_KEY;
 
     fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=' + apiKey, {
       method: 'POST',
@@ -61,29 +61,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-// document.getElementById('summaryButton').addEventListener('click', function() {
-//   const loader = document.getElementById('loader');
-//   const summaryText = document.getElementById('summaryText');
-
-//   // Show loader and hide initial text
-//   loader.style.display = 'block';
-//   summaryText.style.display = 'none';
-
-//   // Example function that simulates fetching summary
-//   fetchSummary().then(summary => {
-//       // Hide loader and show summary
-//       loader.style.display = 'none';
-//       summaryText.style.display = 'block';
-//       summaryText.textContent = summary; // Update the text content with the fetched summary
-//   });
-// });
-
-// async function fetchSummary() {
-//   // Simulate an API call
-//   await new Promise(resolve => setTimeout(resolve, 2000)); // Example timeout to simulate delay
-//   return "This is a simulated summary returned by the API.";
-// }
-
 
 // Listen for response from content script with selected text and URL and call ChatGPT API
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -91,7 +68,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 
     // window.prompt to get user input into a variable
-    const openAIKey = window.prompt('Enter the OPEN_AI_KEY to summarize:');
+    const openAIKey = CONFIG.OPENAI_API_KEY;
     const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
     var textToSummarize = request.selectedText;
     var pageURL = request.url;

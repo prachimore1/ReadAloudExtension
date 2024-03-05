@@ -26,6 +26,7 @@
     },
     "content_scripts": [
         {
+          "resources": ["config.js"],
           "matches": ["<all_urls>"],
           "js": ["content.js"]
         }
