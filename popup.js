@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'selectedText') {
     var textToSynthesize = request.selectedText;
-    var apiKey = 'AIzaSyChuWYZmDjngVzpLQvBOpFwAW_Jz__rp58'; 
+    const apiKey = window.prompt('Enter the Google API_KEY to convert text to speech:');
 
     fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=' + apiKey, {
       method: 'POST',
@@ -65,21 +65,39 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'selectedTextAndURL') {
 
-    const openAIKey = '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';
-    const apiEndpoint = 'https://api.openai.com/v1/completions';
+
+    // window.prompt to get user input into a variable
+    const openAIKey = window.prompt('Enter the OPEN_AI_KEY to summarize:');
+    const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
     var textToSummarize = request.selectedText;
     var pageURL = request.url;
 
-    console.log("selectedText and url in popup=", textToSummarize, pageURL);
-
     const requestBody = {
-      prompt: "Summarize the selected text with context from the page:\n\n" + textToSummarize + "\n\nPage URL: " + pageURL,
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          "role": "system",
+          "content": `You are a helpful assistant that summerizes a given text to 30-80% of its length. 
+                      You will not use the same exact sentences as mentioned in the text. 
+                      You will only provide a gist of what is mentioned in the text. 
+                      You will not use any additional information. 
+                      You will use the text to summerize. 
+                      If they have a list of things then use bullet points to summerize. 
+                      You will keep the context of the page used to grab the text from.`
+        },
+        {
+          "role": "user",
+          "content": `Given the following text from a webpage and the URL of the page, 
+                      summarize the text in a way that includes relevant context from the content available at the URL. 
+                      Text: '${textToSummarize}'. URL: '${pageURL}'. Please provide a concise summary that integrates 
+                      the key points from both the text and any relevant information from the URL.`
+        }
+      ],
       temperature: 0.1,
       max_tokens: 150,
       top_p: 1.0,
       frequency_penalty: 0.0,
-      presence_penalty: 0.0,
-      model: "davinci-002"
+      presence_penalty: 0.0
     };
   
     fetch(apiEndpoint, {
@@ -97,8 +115,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       return response.json();
     })
     .then(data => {
-      if (data.choices && data.choices.length > 0 && data.choices[0].text) {
-        const summaryText = data.choices[0].text.trim();
+      if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+        const summaryText = data.choices[0].message.content.trim();
         console.log('Summary:', summaryText);
         document.getElementById('summaryText').textContent = summaryText;
       }
