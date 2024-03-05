@@ -145,7 +145,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     .then(data => {
       if (data.choices && data.choices.length > 0 && data.choices[0].message) {
         const summaryText = data.choices[0].message.content.trim();
-        console.log('Summary:', summaryText);
 
         document.getElementById('loader').style.display = 'none';
         document.getElementById('summaryText').style.display = 'block';
